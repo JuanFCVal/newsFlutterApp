@@ -12,6 +12,7 @@ class NewsService with ChangeNotifier {
   List<Article> headlines = [];
   List<Category> categoies = [
     Category(FontAwesomeIcons.building, "business"),
+    Category(FontAwesomeIcons.building, "Ejemplo"),
     Category(FontAwesomeIcons.tv, "entertainment"),
     Category(FontAwesomeIcons.addressCard, "general"),
     Category(FontAwesomeIcons.headSideVirus, "health"),
