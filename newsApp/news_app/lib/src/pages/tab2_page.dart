@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/src/models/newsModels/category.dart';
 import 'package:news_app/src/services/news_service.dart';
+import 'package:news_app/src/widgets/lista_noticias.dart';
 import 'package:provider/provider.dart';
 
-class Tab2Page extends StatelessWidget {
+class Tab2Page extends StatefulWidget {
+  @override
+  State<Tab2Page> createState() => _Tab2PageState();
+}
+
+class _Tab2PageState extends State<Tab2Page> {
   @override
   Widget build(BuildContext context) {
+    final newsService = Provider.of<NewsService>(
+      context,
+    );
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: [Expanded(child: categoryList())],
+          children: [
+            Container(height: 90, child: categoryList()),
+            (newsService.isLoading)
+                ? Expanded(child: Center(child: CircularProgressIndicator()))
+                : Expanded(
+                    child: ListaNoticias(
+                      newsService.CategoryArticles,
+                    ),
+                  ),
+          ],
         ),
       ),
     );
@@ -55,9 +73,10 @@ class categoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final newsService = Provider.of<NewsService>(context, listen: false);
     return GestureDetector(
       onTap: () {
-        print('${category.name}');
+        newsService.SelectedCategory = category.name;
       },
       child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -65,7 +84,9 @@ class categoryButton extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
+            color: (newsService.SelectedCategory == this.category.name)
+                ? Colors.lightBlue
+                : Colors.white,
           ),
           child: Icon(category.icon, color: Colors.black)),
     );
